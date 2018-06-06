@@ -19,12 +19,13 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 public class WebDriverSingleton {
 
 	private static WebDriver driver;
-	private WebElement element;
+	private static WebElement element;
 
 	private WebDriverSingleton() {
 	}
 
-	public static WebDriverSingleton getDriverInstance(Browsers browserName)  {
+	
+	public static void initDriverInstance(Browsers browserName)  {
 		DesiredCapabilities caps = null;
 
 		if (driver == null) {
@@ -38,14 +39,14 @@ public class WebDriverSingleton {
 				caps.setCapability("pageLoadStrategy", "none");
 
 				ChromeDriverService service = new ChromeDriverService.Builder()
-						.usingDriverExecutable(new File("/driver/chromedriver.exe")).usingAnyFreePort().build();
+						.usingDriverExecutable(new File(System.getProperty("user.dir") + "/driver/chromedriver.exe")).usingAnyFreePort().build();
 				options.merge(caps);
 				driver = new ChromeDriver(service, options);
 				break;
 			case EDGE:
 				caps = DesiredCapabilities.internetExplorer();
 				EdgeDriverService edgeService = new EdgeDriverService.Builder()
-		         .usingDriverExecutable(new File("/driver/MicrosoftWebDriver.exe"))
+		         .usingDriverExecutable(new File(System.getProperty("user.dir") + "/driver/MicrosoftWebDriver.exe"))
 		         .usingAnyFreePort()
 		         .build();
 				try {
@@ -68,20 +69,20 @@ public class WebDriverSingleton {
 				break;
 			}
 		}
-		return (WebDriverSingleton) driver;
+//		return driver;
 	}
 	
-	public void openURL(String url) {
+	public static void openURL(String url) {
 		driver.get(url);
 		driver.manage().window().maximize();
 	}
 	
-	public void quit() {
+	public static void quit() {
 		driver.quit();
 	}
 	
 	
-	public WebElement findElement(Locator locator, String value) {
+	public static WebElement findElement(Locator locator, String value) {
 		
 		switch (locator) {
 		case CLASSNAME:
