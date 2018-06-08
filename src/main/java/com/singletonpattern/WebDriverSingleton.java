@@ -24,8 +24,7 @@ public class WebDriverSingleton {
 	private WebDriverSingleton() {
 	}
 
-	
-	public static void initDriverInstance(Browsers browserName)  {
+	public static void initDriverInstance(Browsers browserName) {
 		DesiredCapabilities caps = null;
 
 		if (driver == null) {
@@ -39,25 +38,26 @@ public class WebDriverSingleton {
 				caps.setCapability("pageLoadStrategy", "none");
 
 				ChromeDriverService service = new ChromeDriverService.Builder()
-						.usingDriverExecutable(new File(System.getProperty("user.dir") + "/driver/chromedriver.exe")).usingAnyFreePort().build();
+						.usingDriverExecutable(new File(System.getProperty("user.dir") + "/driver/chromedriver.exe"))
+						.usingAnyFreePort().build();
 				options.merge(caps);
 				driver = new ChromeDriver(service, options);
 				break;
 			case EDGE:
 				caps = DesiredCapabilities.internetExplorer();
 				EdgeDriverService edgeService = new EdgeDriverService.Builder()
-		         .usingDriverExecutable(new File(System.getProperty("user.dir") + "/driver/MicrosoftWebDriver.exe"))
-		         .usingAnyFreePort()
-		         .build();
+						.usingDriverExecutable(
+								new File(System.getProperty("user.dir") + "/driver/MicrosoftWebDriver.exe"))
+						.usingAnyFreePort().build();
 				try {
 					edgeService.start();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				EdgeOptions option =new EdgeOptions();
+				EdgeOptions option = new EdgeOptions();
 				option.merge(caps);
-				driver = new EdgeDriver(edgeService,option);
+				driver = new EdgeDriver(edgeService, option);
 				break;
 			case FIREFOX:
 				caps = DesiredCapabilities.firefox();
@@ -69,53 +69,48 @@ public class WebDriverSingleton {
 				break;
 			}
 		}
-//		return driver;
 	}
-	
+
 	public static void openURL(String url) {
 		driver.get(url);
 		driver.manage().window().maximize();
 	}
-	
+
 	public static void quit() {
 		driver.quit();
 	}
-	
-	
+
 	public static WebElement findElement(Locator locator, String value) {
-		
+
 		switch (locator) {
 		case CLASSNAME:
-			element =  driver.findElement(By.className(value));
+			element = driver.findElement(By.className(value));
 			break;
 		case CSS:
-			element =  driver.findElement(By.cssSelector(value));
+			element = driver.findElement(By.cssSelector(value));
 			break;
 		case ID:
-			element =  driver.findElement(By.id(value));
+			element = driver.findElement(By.id(value));
 			break;
 		case LINKTEXT:
-			element =  driver.findElement(By.linkText(value));
+			element = driver.findElement(By.linkText(value));
 			break;
 		case NAME:
-			element =  driver.findElement(By.name(value));
+			element = driver.findElement(By.name(value));
 			break;
 		case PARTIALLINKTEXT:
-			element =  driver.findElement(By.partialLinkText(value));
+			element = driver.findElement(By.partialLinkText(value));
 			break;
 		case TAGNAME:
-			element =  driver.findElement(By.tagName(value));
+			element = driver.findElement(By.tagName(value));
 			break;
 		case XPATH:
-			element =  driver.findElement(By.xpath(value));
+			element = driver.findElement(By.xpath(value));
 			break;
 		default:
 			break;
 		}
 		return element;
 	}
-	
-	
-	
 
 }
